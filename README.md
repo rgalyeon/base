@@ -2,7 +2,8 @@
 
 📍 Данный скрипт облегчает работу с фермой для Base
 
-🔔 <b>Subscribe to me:</b> https://t.me/sybilwave
+🔔 <b>Автор проекта:</b> https://t.me/sybilwave
+🔔 <b>Автор форка:</b> https://t.me/rgalyeon
 
 🤑 <b>Donate me:</b> 0x00000b0ddce0bfda4531542ad1f2f5fad7b9cde9
 
