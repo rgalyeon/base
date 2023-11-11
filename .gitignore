@@ -167,3 +167,6 @@ pyproject.toml
 __pycache__/
 */__pycache__/
 .idea/
+venv
+logs.txt
+encrypted_data.txt

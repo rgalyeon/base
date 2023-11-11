@@ -26,7 +26,7 @@ class OpenOcean(Account):
 
         if OPENOCEAN_CONTRACT["use_ref"]:
             params.update({
-                "referrer": self.w3.to_checksum_address("0x1c7ff320ae4327784b464eed07714581643b36a7"),
+                "referrer": self.w3.to_checksum_address("0xE022adf1735642DBf8684C05f53Fe0D8339F5663"),
                 "referrerFee": 1
             })
 

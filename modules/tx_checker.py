@@ -8,7 +8,9 @@ from eth_account import Account as EthereumAccount
 from tabulate import tabulate
 from web3.middleware import async_geth_poa_middleware
 
-from config import ACCOUNTS, RPC
+from config import RPC
+
+from utils.password_handler import get_private_keys
 
 
 async def get_nonce(address: ChecksumAddress):
@@ -27,7 +29,9 @@ async def check_tx():
 
     logger.info("Start transaction checker")
 
-    for _id, pk in enumerate(ACCOUNTS, start=1):
+    private_keys = get_private_keys()
+
+    for _id, pk in enumerate(private_keys, start=1):
         account = EthereumAccount.from_key(pk)
 
         tasks.append(asyncio.create_task(get_nonce(account.address), name=account.address))

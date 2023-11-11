@@ -751,3 +751,7 @@ async def create_safe(account_id, key):
 
 def get_tx_count():
     asyncio.run(check_tx())
+
+
+def start_encrypt():
+    encrypt_privates(force=True)

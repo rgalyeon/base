@@ -27,3 +27,4 @@ from .swap_tokens import SwapTokens
 from .multiswap import Multiswap
 from .routes import Routes
 from .tx_checker import check_tx
+from .encrypt_privates import encrypt_privates

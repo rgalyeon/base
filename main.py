@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor
 import questionary
 from questionary import Choice
 
-from config import ACCOUNTS
 from settings import (
     RANDOM_WALLET,
     SLEEP_TO,
@@ -18,12 +17,17 @@ from settings import (
 from modules_settings import *
 from utils.helpers import remove_wallet
 from utils.sleeping import sleep
+from utils.password_handler import get_private_keys
+from utils.logs_handler import filter_out_utils
+
+from loguru import logger
 
 
 def get_module():
     result = questionary.select(
         "Select a method to get started",
         choices=[
+            Choice("0) Encrypt wallets", encrypt_privates),
             Choice("1) Make bridge to Base", bridge_base),
             Choice("2) Make bridge on Orbiter", bridge_orbiter),
             Choice("3) Wrap ETH", wrap_eth),
@@ -70,11 +74,12 @@ def get_module():
 
 
 def get_wallets():
+    private_keys = get_private_keys()
     wallets = [
         {
             "id": _id,
             "key": key,
-        } for _id, key in enumerate(ACCOUNTS, start=1)
+        } for _id, key in enumerate(private_keys, start=1)
     ]
 
     return wallets
@@ -94,6 +99,9 @@ def _async_run_module(module, account_id, key):
 
 
 def main(module):
+    if module == encrypt_privates:
+        return encrypt_privates(force=True)
+
     wallets = get_wallets()
 
     if RANDOM_WALLET:
@@ -111,13 +119,11 @@ def main(module):
 
 
 if __name__ == '__main__':
-    print("❤️ Subscribe to me – https://t.me/sybilwave\n")
+
+    logger.add('logs.txt', filter=filter_out_utils)  # todo
 
     module = get_module()
     if module == "tx_checker":
         get_tx_count()
     else:
         main(module)
-
-    print("\n❤️ Subscribe to me – https://t.me/sybilwave\n")
-    print("🤑 Donate me: 0x00000b0ddce0bfda4531542ad1f2f5fad7b9cde9")

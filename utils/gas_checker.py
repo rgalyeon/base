@@ -5,8 +5,9 @@ from web3 import AsyncWeb3
 from web3.middleware import async_geth_poa_middleware
 
 from config import RPC
-from settings import CHECK_GWEI, MAX_GWEI
+from settings import CHECK_GWEI, MAX_GWEI, GAS_SLEEP_FROM, GAS_SLEEP_TO
 from loguru import logger
+from utils.sleeping import sleep
 
 
 async def get_gas():
@@ -31,7 +32,7 @@ async def wait_gas():
 
         if gas > MAX_GWEI:
             logger.info(f'Current GWEI: {gas} > {MAX_GWEI}')
-            await asyncio.sleep(60)
+            await sleep(GAS_SLEEP_FROM, GAS_SLEEP_TO)
         else:
             logger.success(f"GWEI is normal | current: {gas} < {MAX_GWEI}")
             break
