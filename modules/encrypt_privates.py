@@ -20,4 +20,4 @@ def encrypt_privates(force=True):
     except cryptography.fernet.InvalidToken:
         print('Wrong Password')
 
-    logger.info('Successfully encrypted')
+    logger.success('Successfully encrypted')
