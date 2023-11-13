@@ -36,7 +36,8 @@
   },
   "base": {
     "rpc": [
-      "https://rpc.ankr.com/base"
+      "https://rpc.ankr.com/base",
+      "https://base.llamarpc.com"
     ],
     "explorer": "https://basescan.org/tx/",
     "token": "ETH"
