@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 from modules import *
 
@@ -544,13 +545,11 @@ async def mint_nft(account_id, key):
     """
     Mint NFT on NFTS2ME
     ______________________________________________________
-    contracts - list NFT contract addresses
+    Specify contracts at data/nfts2me_contracts.json file or use nfts2me_search_contracts() module
     """
 
-    contracts = [""]
-
     minter = Minter(account_id, key)
-    await minter.mint_nft(contracts)
+    await minter.mint_nft()
 
 
 async def mint_zkstars(account_id, key):
@@ -717,12 +716,30 @@ async def custom_routes(account_id, key):
     await routes.start(use_modules, sleep_from, sleep_to, random_module)
 
 
+async def nfts2me_search_contracts():
+    """
+    Module for searching nfts collections created in the nfts2me service.
+    If you do not want to search for smart contracts for the mint_nfts2me module,
+    you can run this module and it will add the addresses of contracts to the config by itself.
+    ______________________________________________________
+    mint_price - mint price of the searched contract
+    min_total_supply - minimum supply of the collection
+    search_limit - The maximum number of recent transactions to search through. Max: 10000
+    """
+    mint_price = 0
+    min_total_supply = 200
+    search_limit = 200
+
+    await find_and_update_nfts2me_contracts(mint_price, min_total_supply, search_limit)
+
+
 #########################################
 ########### NO NEED TO CHANGE ###########
 #########################################
 async def send_mail(account_id, key):
     dmail = Dmail(account_id, key)
     await dmail.send_mail()
+
 
 async def withdraw_aave(account_id, key):
     aave = Aave(account_id, key)

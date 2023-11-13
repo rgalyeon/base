@@ -85,11 +85,19 @@ with open("data/abi/zerius/abi.json", "r") as file:
 with open("data/abi/nft2me/abi.json", "r") as file:
     NFTS2ME_ABI = json.load(file)
 
+with open("data/abi/nft2me/abi_main.json", "r") as file:
+    NFTS2ME_MAIN_ABI = json.load(file)
+
 with open("data/abi/dmail/abi.json", "r") as file:
     DMAIL_ABI = json.load(file)
 
 with open("data/abi/zkstars/abi.json", "r") as file:
     ZKSTARS_ABI = json.load(file)
+
+with open("data/nfts2me_contracts.json", "r") as file:
+    NFTS2ME_CONTRACTS = json.load(file)
+
+NFTS2ME_CONTRACTS_PATH = 'data/nfts2me_contracts.json'
 
 ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
@@ -183,3 +191,13 @@ SAFE_CONTRACT = "0xc22834581ebc8527d974f8a1c97e1bea4ef910bc"
 ZERIUS_CONTRACT = "0x178608ffe2cca5d36f3fc6e69426c4d3a5a74a41"
 
 DMAIL_CONTRACT = "0x47fbe95e981C0Df9737B6971B451fB15fdC989d9"
+
+NFTS2ME_CREATOR_CONTRACT = '0x2269bCeB3f4e0AA53D2FC43B1B7C5C5D13B119a5'
+
+#################################################################
+#                      BASESCAN API                             #
+#################################################################
+
+BASESCAN_URL = 'https://api.basescan.org/api'
+
+BASESCAN_API_KEY = ''

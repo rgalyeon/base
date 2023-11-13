@@ -1,3 +1,4 @@
+import asyncio
 import random
 import sys
 import time
@@ -56,12 +57,13 @@ def get_module():
             Choice("26) Mint and bridge NFT L2Telegraph", bridge_nft),
             Choice("27) Create portfolio on Ray", create_portfolio),
             Choice("28) Create gnosis safe", create_safe),
-            Choice("29) Mint NFT on NFTS2ME", mint_nft),
-            Choice("30) Swap tokens to ETH", swap_tokens),
-            Choice("31) Use Multiswap", swap_multiswap),
-            Choice("32) Use custom routes", custom_routes),
-            Choice("33) Check transaction count", "tx_checker"),
-            Choice("34) Exit", "exit"),
+            Choice("29) Search NFTS2ME contracts", nfts2me_search_contracts),
+            Choice("30) Mint NFT on NFTS2ME", mint_nft),
+            Choice("31) Swap tokens to ETH", swap_tokens),
+            Choice("32) Use Multiswap", swap_multiswap),
+            Choice("33) Use custom routes", custom_routes),
+            Choice("34) Check transaction count", "tx_checker"),
+            Choice("35) Exit", "exit"),
         ],
         qmark="⚙️ ",
         pointer="✅ "
@@ -101,6 +103,8 @@ def _async_run_module(module, account_id, key):
 def main(module):
     if module == encrypt_privates:
         return encrypt_privates(force=True)
+    if module == nfts2me_search_contracts:
+        return asyncio.run(nfts2me_search_contracts())
 
     wallets = get_wallets()
 

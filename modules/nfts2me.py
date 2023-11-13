@@ -1,8 +1,7 @@
 import random
-from typing import List
 
 from loguru import logger
-from config import NFTS2ME_ABI
+from config import NFTS2ME_ABI, NFTS2ME_CONTRACTS
 from utils.gas_checker import check_gas
 from utils.helpers import retry
 from .account import Account
@@ -14,8 +13,10 @@ class Minter(Account):
 
     @retry
     @check_gas
-    async def mint_nft(self, contracts: List):
+    async def mint_nft(self):
         logger.info(f"[{self.account_id}][{self.address}] Mint NFT on NFTS2ME")
+
+        contracts = NFTS2ME_CONTRACTS
 
         contract = self.get_contract(random.choice(contracts), NFTS2ME_ABI)
 

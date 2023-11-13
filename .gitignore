@@ -170,3 +170,4 @@ __pycache__/
 venv
 logs.txt
 encrypted_data.txt
+test.py
