@@ -1,8 +1,16 @@
 import json
 
+OKX_API_INFO = {
+        'apiKey': "",
+        'secret': "",
+        'password': "",
+        'proxy_url': ""
+}
+
 WALLETS_PATH = 'wallets.txt'
 PRIVATE_KEYS_PATH = 'private_keys.txt'
 ENCRYPTED_DATA_PATH = 'encrypted_data.txt'
+REALTIME_SETTINGS_PATH = "realtime_settings.json"
 
 with open('data/rpc.json') as file:
     RPC = json.load(file)
@@ -96,6 +104,9 @@ with open("data/abi/zkstars/abi.json", "r") as file:
 
 with open("data/nfts2me_contracts.json", "r") as file:
     NFTS2ME_CONTRACTS = json.load(file)
+
+with open('data/orbiter_maker.json', 'r') as file:
+    ORBITER_MAKER = json.load(file)
 
 NFTS2ME_CONTRACTS_PATH = 'data/nfts2me_contracts.json'
 
@@ -201,3 +212,11 @@ NFTS2ME_CREATOR_CONTRACT = '0x2269bCeB3f4e0AA53D2FC43B1B7C5C5D13B119a5'
 BASESCAN_URL = 'https://api.basescan.org/api'
 
 BASESCAN_API_KEY = ''
+
+CHAINS_OKX = {
+    'linea': 'Linea',
+    'base': 'Base',
+    'arbitrum': 'Arbitrum One',
+    'optimism': 'Optimism',
+    'zksync': 'zkSync Era'
+}

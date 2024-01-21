@@ -138,6 +138,7 @@ class Account:
                 elif status is None:
                     await asyncio.sleep(0.3)
                 else:
+                    print(receipts)
                     logger.error(f"[{self.account_id}][{self.address}] {self.explorer}{hash} transaction failed!")
                     return
             except TransactionNotFound:

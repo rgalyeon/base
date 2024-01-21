@@ -1,5 +1,4 @@
 import asyncio
-import json
 
 from modules import *
 
@@ -24,16 +23,40 @@ async def bridge_base(account_id, key):
     await base.deposit(min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def bridge_orbiter(account_id, key):
+async def withdraw_okx(_id, key):
+    """
+    Withdraw ETH from OKX. OKX support only ETH for Starknet chain
+    ______________________________________________________
+    min_amount - min amount (ETH)
+    max_amount - max_amount (ETH)
+    chains - ['zksync', 'arbitrum', 'linea', 'base', 'optimism']
+    terminate - if True - terminate program if money is not withdrawn
+    """
+    token = 'ETH'
+    chains = ['arbitrum', 'zksync', 'linea', 'base', 'optimism']
+
+    min_amount = 0.0075
+    max_amount = 0.01
+
+    terminate = True
+
+    okx_exchange = Okx(_id, key, chains)
+    await okx_exchange.okx_withdraw(min_amount, max_amount, token, terminate)
+
+
+async def bridge_orbiter(account_id, key, proxy):
     """
     Bridge from orbiter
     ______________________________________________________
-    from_chain – ethereum, base, polygon_zkevm, arbitrum, optimism, zksync | Select one
-    to_chain – ethereum, base, polygon_zkevm, arbitrum, optimism, zksync | Select one
+    from_chain – ethereum, polygon_zkevm, arbitrum, optimism, zksync | Select one
+    to_chain – ethereum, polygon_zkevm, arbitrum, optimism, zksync | Select one
+
+    save_funds - how much eth save on the account (min and max, choose randomly)
+    min_required_amount - минимальная требуемая сумма в сети, на которую будет реагировать модуль в eth
     """
 
-    from_chain = "zksync"
-    to_chain = "base"
+    from_chains = ["arbitrum", "optimism", "base", "scroll", "linea"]
+    to_chain = "zksync"
 
     min_amount = 0.005
     max_amount = 0.0051
@@ -43,9 +66,11 @@ async def bridge_orbiter(account_id, key):
 
     min_percent = 5
     max_percent = 10
+    save_funds = [0.0006, 0.001]
+    min_required_amount = 0.001
 
-    orbiter = Orbiter(account_id, key, from_chain)
-    await orbiter.bridge(to_chain, min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
+    orbiter = Orbiter(account_id, key, from_chains, min_required_amount)
+    await orbiter.bridge(to_chain, min_amount, max_amount, decimal, all_amount, min_percent, max_percent, save_funds)
 
 
 async def wrap_eth(account_id, key):
@@ -534,8 +559,8 @@ async def mint_zerius(account_id, key):
 
     chains = ["zora"]
 
-    sleep_from = 10
-    sleep_to = 20
+    sleep_from = 200
+    sleep_to = 700
 
     zerius = Zerius(account_id, key)
     await zerius.bridge(chains, sleep_from, sleep_to)
@@ -548,8 +573,10 @@ async def mint_nft(account_id, key):
     Specify contracts at data/nfts2me_contracts.json file or use nfts2me_search_contracts() module
     """
 
+    contracts = ['0xe99BDeef1BfACBd8313015346C9E5f2CC03fC878']  # await parse_nfts2me_contracts(0, 200, 6000)
+    print(contracts)
     minter = Minter(account_id, key)
-    await minter.mint_nft()
+    await minter.mint_nft(contracts)
 
 
 async def mint_zkstars(account_id, key):
@@ -716,6 +743,34 @@ async def custom_routes(account_id, key):
     await routes.start(use_modules, sleep_from, sleep_to, random_module)
 
 
+async def automatic_routes(account_id, key):
+    """
+    Модуль автоматически генерирует пути по которому пройдет кошелек,
+    меняя вероятности выбрать тот или иной модуль для каждого кошелька
+
+    Parameters
+    ----------
+    transaction_count - количество транзакций (не обязательно все выполнятся, модули могут пропускаться)
+    cheap_ratio - от 0 до 1, доля дешевых транзакций при построении маршрута
+    cheap_modules - список модулей, которые будут использоваться в качестве дешевых
+    expensive_modules - список модулей, которые будут использоваться в качестве дорогих
+    -------
+
+    """
+
+    transaction_count = 25
+    cheap_ratio = 1.0
+
+    sleep_from = 30
+    sleep_to = 60
+
+    cheap_modules = [send_mail, create_safe, mint_zkstars, mint_nft]
+    expensive_modules = [swap_multiswap, deposit_aave, deposit_moonwell, create_portfolio, mint_zerius]
+
+    routes = Routes(account_id, key)
+    await routes.start_automatic(transaction_count, cheap_ratio, sleep_from, sleep_to, cheap_modules, expensive_modules)
+
+
 async def nfts2me_search_contracts():
     """
     Module for searching nfts collections created in the nfts2me service.
@@ -727,8 +782,8 @@ async def nfts2me_search_contracts():
     search_limit - The maximum number of recent transactions to search through. Max: 10000
     """
     mint_price = 0
-    min_total_supply = 200
-    search_limit = 200
+    min_total_supply = 100
+    search_limit = 9000
 
     await find_and_update_nfts2me_contracts(mint_price, min_total_supply, search_limit)
 
